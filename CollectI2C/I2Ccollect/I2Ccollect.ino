@@ -1,7 +1,10 @@
-// /!\ OVERWRITE cameraTriggerValue for constant i2c communication without trigger
-//SCB-19: red: SDA   black: SCL
-//arduino: red: A4   black: A5
+
+///////i2c communication
+//SCB-19: PFI0: SDA   PFI1: SCL
 //mega : data: 20, clock : 21
+
+//arduino: red: A4   black: A5
+
 
 //COMMENT MOTION_SENSOR IF NOT USING THE OPTICAL MICE
 //COMMENT _DEBUG_ IF NOT DEBUGGING
@@ -59,8 +62,8 @@ int clockMouse2Pin = 3;
 int dataMouse2Pin = 2;
 #include "MotionSensorAcq.h"
 
-//thermocamera
-int thermRespirationPin = A5;
+//analog channel2
+int analog2 = A5;
 
 //Lick sensor
 int lickPin = 8;
@@ -81,7 +84,7 @@ int I2CSwitch = 21;
 // =====  Acquistion Values   ====
 // ===============================
 int motionSensorValuesArray[3] = {0};
-int thermRespValue;
+int analog2Value;
 int lickValue;
 int lickValveActivationValue;
 int lickDrainValveActivationValue;
@@ -104,7 +107,7 @@ char motionXI2cArray[8];
 char motionYI2cArray[8];
 char motionZI2cArray[8];
 //therm resp
-char thermRespI2cArray[5]; 
+char analog2I2cArray[5]; 
 //lick sensor
 char lickValueI2cArray[2];
 char lickValveActivationI2cArray[2];
@@ -116,7 +119,7 @@ void setup() {
   pinMode(21, INPUT_PULLUP); //sets i2C bus with internal pullup
   pinMode(cameraTriggerPin, INPUT_PULLUP);
   pinMode(stimulusPin, INPUT_PULLUP);
-  pinMode(thermRespirationPin, INPUT_PULLUP);
+  pinMode(analog2, INPUT_PULLUP);
   pinMode(lickPin, INPUT_PULLUP);
   pinMode(lickValveActivationPin, INPUT_PULLUP);
   pinMode(lickDrainValveActivationPin, INPUT_PULLUP);
@@ -176,7 +179,7 @@ void i2cDataTransform() {
   ((String)motionSensorValuesArray[0]).toCharArray(motionXI2cArray, 8);
   ((String)motionSensorValuesArray[1]).toCharArray(motionYI2cArray, 8);
   ((String)motionSensorValuesArray[2]).toCharArray(motionZI2cArray, 8);
-  ((String)thermRespValue).toCharArray(thermRespI2cArray, 5);
+  ((String)analog2Value).toCharArray(analog2I2cArray, 5);
   ((String)lickValue).toCharArray(lickValueI2cArray, 2);
   ((String)lickValveActivationValue).toCharArray(lickValveActivationI2cArray, 2);
   ((String)lickDrainValveActivationValue).toCharArray(lickDrainValveActivationI2cArray, 2);
@@ -190,7 +193,7 @@ void i2cCommunication() {
   Wire.write(motionXI2cArray); Wire.write(" ");
   Wire.write(motionYI2cArray); Wire.write(" ");
   Wire.write(motionZI2cArray); Wire.write(" ");
-  Wire.write(thermRespI2cArray); Wire.write(" ");
+  Wire.write(analog2I2cArray); Wire.write(" ");
   Wire.write(lickValueI2cArray); Wire.write(" ");
   Wire.write(lickValveActivationI2cArray); Wire.write(" ");
   Wire.write(lickDrainValveActivationI2cArray); Wire.write(" ");
@@ -204,7 +207,7 @@ void ArduinoPlot() {
   Serial.print("motionX: "); Serial.print(motionSensorValuesArray[0]); Serial.print(" ");
   Serial.print("motionY: "); Serial.print(-motionSensorValuesArray[1]); Serial.print(" "); //note the negative
   Serial.print("motionZ: "); Serial.print(motionSensorValuesArray[2]); Serial.print(" ");
-  Serial.print("termResp: "); Serial.print(thermRespValue); Serial.print(" ");
+  Serial.print("analog2: "); Serial.print(analog2Value); Serial.print(" ");
   Serial.print("lickValue: "); Serial.print(lickValue * 5000); Serial.print(" ");
   Serial.print("lickValveActivationValue: "); Serial.print(lickValveActivationValue * 5000); Serial.print(" ");
   Serial.print("lickDrainValveActivationValue: "); Serial.print(lickDrainValveActivationValue * 5000); Serial.print(" ");
@@ -222,8 +225,8 @@ void dataAcquisition() {
 #ifdef MOTION_SENSOR
   motionSensorAcq(&motionSensorValuesArray[0]);
 #endif
-  thermRespValue = analogRead(thermRespirationPin);
-  thermRespValue *= (5000 / 1023.0);
+  analog2Value = analogRead(analog2);
+  analog2Value *= (5000 / 1023.0);
   lickValue = digitalRead(lickPin);
   lickValveActivationValue = digitalRead(lickValveActivationPin);
   lickDrainValveActivationValue = digitalRead(lickDrainValveActivationPin);
