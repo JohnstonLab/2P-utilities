@@ -134,7 +134,7 @@ void loop() {
   ////////////////////////////////////////////////////////////////////
   /*OVERWRITE cameraTriggerValue so constant i2c communication without trigger*/
   ////////////////////////////////////////////////////////////////////
-  cameraTriggerValue = 1;
+  //cameraTriggerValue = 1;
 
   if (cameraTriggerValue == 1) {
 #ifdef _DEBUG_

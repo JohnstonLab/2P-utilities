@@ -74,6 +74,9 @@ int strainGaugePin = A4;
 int cameraTriggerPin = 15; //
 int stimulusPin = 16; //aurora 206 final valve
 
+// swithI2C mode
+int I2CSwitch = 21;
+
 // ===============================
 // =====  Acquistion Values   ====
 // ===============================
@@ -101,7 +104,7 @@ char motionXI2cArray[8];
 char motionYI2cArray[8];
 char motionZI2cArray[8];
 //therm resp
-char thermRespI2cArray[5];
+char thermRespI2cArray[5]; 
 //lick sensor
 char lickValueI2cArray[2];
 char lickValveActivationI2cArray[2];
@@ -118,6 +121,7 @@ void setup() {
   pinMode(lickValveActivationPin, INPUT_PULLUP);
   pinMode(lickDrainValveActivationPin, INPUT_PULLUP);
   pinMode(strainGaugePin, INPUT_PULLUP);
+  pinMode(I2CSwitch, INPUT);
   Wire.begin();
   //Wire.setClock(400000); //400kHz i2C freq change. must be left to default (100kHz) for scanImage to handle the data!
   Serial.begin(500000);
@@ -134,7 +138,13 @@ void loop() {
   ////////////////////////////////////////////////////////////////////
   /*OVERWRITE cameraTriggerValue so constant i2c communication without trigger*/
   ////////////////////////////////////////////////////////////////////
-  cameraTriggerValue = 1;
+ // cameraTriggerValue = 1;
+  if(digitalRead(I2CSwitch) == HIGH){
+    cameraTriggerValue = 1;
+  }
+  if(digitalRead(I2CSwitch) == LOW){
+    cameraTriggerValue = 0;
+  }
 
   if (cameraTriggerValue == 1) {
 #ifdef _DEBUG_
