@@ -74,7 +74,7 @@ int lickDrainValveActivationPin = 10;
 int strainGaugePin = A4;
 
 //camera trigger and stimulus
-int cameraTriggerPin = 15; //
+int syncPin = 15; //
 int stimulusPin = 16; //aurora 206 final valve
 
 // swithI2C mode
@@ -117,7 +117,7 @@ char lickDrainValveActivationI2cArray[2];
 void setup() {
   pinMode(20, INPUT_PULLUP);
   pinMode(21, INPUT_PULLUP); //sets i2C bus with internal pullup
-  pinMode(cameraTriggerPin, INPUT_PULLUP);
+  pinMode(syncPin, INPUT);
   pinMode(stimulusPin, INPUT_PULLUP);
   pinMode(analog2, INPUT_PULLUP);
   pinMode(lickPin, INPUT_PULLUP);
@@ -230,7 +230,7 @@ void dataAcquisition() {
   lickValue = digitalRead(lickPin);
   lickValveActivationValue = digitalRead(lickValveActivationPin);
   lickDrainValveActivationValue = digitalRead(lickDrainValveActivationPin);
-  cameraTriggerValue = digitalRead(cameraTriggerPin);
+  cameraTriggerValue = digitalRead(syncPin);
   stimulusValue = digitalRead(stimulusPin);
   strainGaugeValue = analogRead(strainGaugePin);
   strainGaugeValue *= (5000 / 1023.0); //in mV
