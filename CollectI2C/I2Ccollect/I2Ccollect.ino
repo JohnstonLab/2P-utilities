@@ -114,7 +114,7 @@ char lickDrainValveActivationI2cArray[2];
 void setup() {
   pinMode(20, INPUT_PULLUP);
   pinMode(21, INPUT_PULLUP); //sets i2C bus with internal pullup
-  pinMode(cameraTriggerPin, INPUT_PULLUP);
+  pinMode(cameraTriggerPin, INPUT);
   pinMode(stimulusPin, INPUT_PULLUP);
   pinMode(thermRespirationPin, INPUT_PULLUP);
   pinMode(lickPin, INPUT_PULLUP);
