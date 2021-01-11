@@ -75,7 +75,7 @@ int cameraTriggerPin = 15; //
 int stimulusPin = 16; //aurora 206 final valve
 
 // swithI2C mode
-int I2CSwitch = 21;
+int I2CSwitch = 19;
 
 // ===============================
 // =====  Acquistion Values   ====
@@ -115,12 +115,12 @@ void setup() {
   pinMode(20, INPUT_PULLUP);
   pinMode(21, INPUT_PULLUP); //sets i2C bus with internal pullup
   pinMode(cameraTriggerPin, INPUT);
-  pinMode(stimulusPin, INPUT_PULLUP);
-  pinMode(thermRespirationPin, INPUT_PULLUP);
-  pinMode(lickPin, INPUT_PULLUP);
-  pinMode(lickValveActivationPin, INPUT_PULLUP);
-  pinMode(lickDrainValveActivationPin, INPUT_PULLUP);
-  pinMode(strainGaugePin, INPUT_PULLUP);
+  pinMode(stimulusPin, INPUT);
+  pinMode(thermRespirationPin, INPUT);
+  pinMode(lickPin, INPUT);
+  pinMode(lickValveActivationPin, INPUT);
+  pinMode(lickDrainValveActivationPin, INPUT);
+  pinMode(strainGaugePin, INPUT);
   pinMode(I2CSwitch, INPUT);
   Wire.begin();
   //Wire.setClock(400000); //400kHz i2C freq change. must be left to default (100kHz) for scanImage to handle the data!
