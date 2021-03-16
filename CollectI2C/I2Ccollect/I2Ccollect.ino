@@ -77,6 +77,16 @@ int stimulusPin = 16; //aurora 206 final valve
 // swithI2C mode
 int I2CSwitch = 19;
 
+//olf220A
+int cleanAirPin = A0;
+int OdourFlowPin = A1;
+int DilutionFlowPin = A2;
+int OdSig1Pin = 31;
+int OdSig2Pin = 32;
+int OdSig3Pin = 33;
+int OdSig4Pin = 34;
+int OdSig5Pin = 35;
+
 // ===============================
 // =====  Acquistion Values   ====
 // ===============================
@@ -88,6 +98,15 @@ int lickDrainValveActivationValue;
 int strainGaugeValue;
 int cameraTriggerValue; // == 1 when triggered
 int stimulusValue;
+int cleanAir;
+int OdourFlow;
+int DilutionFlow;
+int OdSig1;
+int OdSig2;
+int OdSig3;
+int OdSig4;
+int OdSig5;
+int OdourVial;
 
 // ===============================
 // =====         I2C          ====
@@ -109,6 +128,11 @@ char thermRespI2cArray[5];
 char lickValueI2cArray[2];
 char lickValveActivationI2cArray[2];
 char lickDrainValveActivationI2cArray[2];
+//olf220A
+char cleanAirI2cArray[5];
+char OdourFlowI2cArray[5];
+char DilutionFlowI2cArray[5];
+char OdourVialI2cArray[5];
 
 // the setup routine runs once when you press reset:
 void setup() {
@@ -122,6 +146,14 @@ void setup() {
   pinMode(lickDrainValveActivationPin, INPUT);
   pinMode(strainGaugePin, INPUT);
   pinMode(I2CSwitch, INPUT);
+  pinMode(cleanAirPin, INPUT);
+  pinMode(OdourFlowPin, INPUT);
+  pinMode(DilutionFlowPin, INPUT);
+  pinMode(OdSig1Pin, INPUT);
+  pinMode(OdSig2Pin, INPUT);
+  pinMode(OdSig3Pin, INPUT);
+  pinMode(OdSig4Pin, INPUT);
+  pinMode(OdSig5Pin, INPUT);
   Wire.begin();
   //Wire.setClock(400000); //400kHz i2C freq change. must be left to default (100kHz) for scanImage to handle the data!
   Serial.begin(500000);
@@ -180,13 +212,23 @@ void i2cDataTransform() {
   ((String)lickValue).toCharArray(lickValueI2cArray, 2);
   ((String)lickValveActivationValue).toCharArray(lickValveActivationI2cArray, 2);
   ((String)lickDrainValveActivationValue).toCharArray(lickDrainValveActivationI2cArray, 2);
+  ((String)cleanAir).toCharArray(cleanAirI2cArray, 5);
+  ((String)OdourFlow).toCharArray(OdourFlowI2cArray, 5);
+  ((String)DilutionFlow).toCharArray(DilutionFlowI2cArray, 5);
+  ((String)OdourVial).toCharArray(OdourVialI2cArray, 5);
 }
+
+
 
 void i2cCommunication() {
   Wire.beginTransmission(0x00); // transmits to device with address 0
   Wire.write(strainGaugeI2cArray); Wire.write(" "); // sends strain gauge value
   Wire.write(cameraTriggerI2cArray); Wire.write(" ");// sends trigger, should be always 1
   Wire.write(stimulusI2cArray); Wire.write(" "); // sends final valve
+  Wire.write(cleanAirI2cArray); Wire.write(" ");
+  Wire.write(OdourFlowI2cArray); Wire.write(" ");
+  Wire.write(DilutionFlowI2cArray); Wire.write(" ");
+  Wire.write(OdourVialI2cArray); Wire.write(" ");
   Wire.write(motionXI2cArray); Wire.write(" ");
   Wire.write(motionYI2cArray); Wire.write(" ");
   Wire.write(motionZI2cArray); Wire.write(" ");
@@ -200,6 +242,7 @@ void i2cCommunication() {
 // ===============================
 // =====   Arduino plotting   ====
 // ===============================
+// olf220a not plotted
 void ArduinoPlot() {
   Serial.print("motionX: "); Serial.print(motionSensorValuesArray[0]); Serial.print(" ");
   Serial.print("motionY: "); Serial.print(-motionSensorValuesArray[1]); Serial.print(" "); //note the negative
@@ -231,4 +274,52 @@ void dataAcquisition() {
   stimulusValue = digitalRead(stimulusPin);
   strainGaugeValue = analogRead(strainGaugePin);
   strainGaugeValue *= (5000 / 1023.0); //in mV
+  cleanAir = analogRead(cleanAirPin);
+  strainGaugeValue = analogRead(strainGaugePin);
+  OdourFlow = analogRead(OdourFlowPin);
+  DilutionFlow = digitalRead(DilutionFlowPin);
+  OdSig1 = digitalRead(OdSig1Pin);
+  OdSig2 = digitalRead(OdSig2Pin);
+  OdSig3 = digitalRead(OdSig3Pin);
+  OdSig4 = digitalRead(OdSig4Pin);
+  OdSig5 = digitalRead(OdSig5Pin);
+  if(OdSig1 == HIGH && OdSig2 ==LOW && OdSig3 ==LOW && OdSig4 ==LOW && OdSig5 == HIGH){
+    OdourVial = 0;
+  }
+  if(OdSig1 == HIGH && OdSig2 ==LOW && OdSig3 ==LOW && OdSig4 ==LOW && OdSig5 == LOW){
+    OdourVial = 1;
+  }
+  if(OdSig1 == LOW && OdSig2 ==HIGH && OdSig3 ==LOW && OdSig4 ==LOW && OdSig5 == LOW){
+    OdourVial = 2;
+  }
+  if(OdSig1 == HIGH && OdSig2 ==HIGH && OdSig3 ==LOW && OdSig4 ==LOW && OdSig5 == LOW){
+    OdourVial = 3;
+  }
+  if(OdSig1 == LOW && OdSig2 ==LOW && OdSig3 ==HIGH && OdSig4 ==LOW && OdSig5 == LOW){
+    OdourVial = 4;
+  }
+  if(OdSig1 == HIGH && OdSig2 ==LOW && OdSig3 ==HIGH && OdSig4 ==LOW && OdSig5 == LOW){
+    OdourVial = 5;
+  }
+  if(OdSig1 == LOW && OdSig2 ==HIGH && OdSig3 ==HIGH && OdSig4 ==LOW && OdSig5 == LOW){
+    OdourVial = 6;
+  }
+  if(OdSig1 == HIGH && OdSig2 ==HIGH && OdSig3 ==HIGH && OdSig4 ==LOW && OdSig5 == LOW){
+    OdourVial = 7;
+  }
+  if(OdSig1 == LOW && OdSig2 ==LOW && OdSig3 ==LOW && OdSig4 ==HIGH && OdSig5 == LOW){
+    OdourVial = 8;
+  }
+  if(OdSig1 == HIGH && OdSig2 ==LOW && OdSig3 ==LOW && OdSig4 ==HIGH && OdSig5 == LOW){
+    OdourVial = 9;
+  }
+  if(OdSig1 == LOW && OdSig2 ==HIGH && OdSig3 ==LOW && OdSig4 ==HIGH && OdSig5 == LOW){
+    OdourVial = 10;
+  } 
+  if(OdSig1 == HIGH && OdSig2 ==HIGH && OdSig3 ==LOW && OdSig4 ==HIGH && OdSig5 == LOW){
+    OdourVial = 11;
+  }
+  if(OdSig1 == LOW && OdSig2 ==LOW && OdSig3 ==HIGH && OdSig4 ==HIGH && OdSig5 == LOW){
+    OdourVial = 12;
+  }
 }
