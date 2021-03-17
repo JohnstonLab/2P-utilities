@@ -225,17 +225,17 @@ void i2cCommunication() {
   Wire.write(strainGaugeI2cArray); Wire.write(" "); // sends strain gauge value
   Wire.write(cameraTriggerI2cArray); Wire.write(" ");// sends trigger, should be always 1
   Wire.write(stimulusI2cArray); Wire.write(" "); // sends final valve
+//  Wire.write(motionXI2cArray); Wire.write(" ");
+//  Wire.write(motionYI2cArray); Wire.write(" ");
+//  Wire.write(motionZI2cArray); Wire.write(" ");
+  Wire.write(thermRespI2cArray); Wire.write(" ");
+//  Wire.write(lickValueI2cArray); Wire.write(" ");
+//  Wire.write(lickValveActivationI2cArray); Wire.write(" ");
+//  Wire.write(lickDrainValveActivationI2cArray); Wire.write(" ");
   Wire.write(cleanAirI2cArray); Wire.write(" ");
   Wire.write(OdourFlowI2cArray); Wire.write(" ");
   Wire.write(DilutionFlowI2cArray); Wire.write(" ");
   Wire.write(OdourVialI2cArray); Wire.write(" ");
-  Wire.write(motionXI2cArray); Wire.write(" ");
-  Wire.write(motionYI2cArray); Wire.write(" ");
-  Wire.write(motionZI2cArray); Wire.write(" ");
-  Wire.write(thermRespI2cArray); Wire.write(" ");
-  Wire.write(lickValueI2cArray); Wire.write(" ");
-  Wire.write(lickValveActivationI2cArray); Wire.write(" ");
-  Wire.write(lickDrainValveActivationI2cArray); Wire.write(" ");
   i2cError = Wire.endTransmission();
 }
 
@@ -244,9 +244,9 @@ void i2cCommunication() {
 // ===============================
 // olf220a not plotted
 void ArduinoPlot() {
-  Serial.print("motionX: "); Serial.print(motionSensorValuesArray[0]); Serial.print(" ");
-  Serial.print("motionY: "); Serial.print(-motionSensorValuesArray[1]); Serial.print(" "); //note the negative
-  Serial.print("motionZ: "); Serial.print(motionSensorValuesArray[2]); Serial.print(" ");
+//  Serial.print("motionX: "); Serial.print(motionSensorValuesArray[0]); Serial.print(" ");
+//  Serial.print("motionY: "); Serial.print(-motionSensorValuesArray[1]); Serial.print(" "); //note the negative
+//  Serial.print("motionZ: "); Serial.print(motionSensorValuesArray[2]); Serial.print(" ");
   Serial.print("termResp: "); Serial.print(thermRespValue); Serial.print(" ");
   Serial.print("lickValue: "); Serial.print(lickValue * 5000); Serial.print(" ");
   Serial.print("lickValveActivationValue: "); Serial.print(lickValveActivationValue * 5000); Serial.print(" ");
@@ -254,7 +254,10 @@ void ArduinoPlot() {
   Serial.print("cameraTriggerValue: "); Serial.print(cameraTriggerValue * 5000); Serial.print(" ");
   Serial.print("stimulusValue: "); Serial.print(stimulusValue * 5000); Serial.print(" ");
   Serial.print("strainGaugeValue: "); Serial.print(strainGaugeValue); Serial.print(" ");
-
+//  Serial.print("OdourVial: "); Serial.print(OdourVial); Serial.print(" ");
+//  Serial.print("cleanAir: "); Serial.print(cleanAir); Serial.print(" ");
+//  Serial.print("OdourFlow: "); Serial.print(OdourFlow); Serial.print(" ");
+//  Serial.print("DilutionFlow: "); Serial.print(DilutionFlow); Serial.print(" ");
   Serial.print("\n"); //required to plot each time
 }
 
@@ -275,8 +278,8 @@ void dataAcquisition() {
   strainGaugeValue = analogRead(strainGaugePin);
   strainGaugeValue *= (5000 / 1023.0); //in mV
   cleanAir = analogRead(cleanAirPin);
-  strainGaugeValue = analogRead(strainGaugePin);
   OdourFlow = analogRead(OdourFlowPin);
+  OdourFlow *=100;
   DilutionFlow = digitalRead(DilutionFlowPin);
   OdSig1 = digitalRead(OdSig1Pin);
   OdSig2 = digitalRead(OdSig2Pin);
