@@ -10,7 +10,7 @@
 #include <Wire.h>
 
 //#define _DEBUG_ // debug conditional compiling
-//#define MOTION_SENSOR //conditional compiling if using optical mice. COMMENT IF NOT USING THE MICE
+//#define MOTION_SENSOR //conditional compiling if using optical mice. COMMENT IF NOT USNG THE MICE
 
 
 /*TO ADD A NEW DATA:
@@ -75,7 +75,7 @@ int cameraTriggerPin = 15; //
 int stimulusPin = 16; //aurora 206 final valve
 
 // swithI2C mode
-int I2CSwitch = 19;
+int I2CSwitch = 13;
 
 //olf220A
 int cleanAirPin = A0;
@@ -111,7 +111,7 @@ int OdourVial;
 // ===============================
 // =====         I2C          ====
 // ===============================
-int DELAY_I2C = 1;
+int DELAY_I2C = 2;
 int i2cError = 0;
 
 //I2C message
@@ -138,14 +138,14 @@ char OdourVialI2cArray[5];
 void setup() {
   pinMode(20, INPUT_PULLUP);
   pinMode(21, INPUT_PULLUP); //sets i2C bus with internal pullup
-  pinMode(cameraTriggerPin, INPUT);
+  pinMode(cameraTriggerPin, INPUT_PULLUP);
   pinMode(stimulusPin, INPUT);
   pinMode(thermRespirationPin, INPUT);
   pinMode(lickPin, INPUT);
   pinMode(lickValveActivationPin, INPUT);
   pinMode(lickDrainValveActivationPin, INPUT);
   pinMode(strainGaugePin, INPUT);
-  pinMode(I2CSwitch, INPUT);
+  pinMode(I2CSwitch, INPUT_PULLUP);
   pinMode(cleanAirPin, INPUT);
   pinMode(OdourFlowPin, INPUT);
   pinMode(DilutionFlowPin, INPUT);
@@ -194,6 +194,7 @@ void loop() {
     Serial.println("I2C OFF, cameraTriggerValue != 1");
   }
 #endif
+  delay(DELAY_I2C);
 }
 
 //-----------------------------------------------------------------------------------
@@ -228,7 +229,7 @@ void i2cCommunication() {
 //  Wire.write(motionXI2cArray); Wire.write(" ");
 //  Wire.write(motionYI2cArray); Wire.write(" ");
 //  Wire.write(motionZI2cArray); Wire.write(" ");
-  Wire.write(thermRespI2cArray); Wire.write(" ");
+//  Wire.write(thermRespI2cArray); Wire.write(" ");
 //  Wire.write(lickValueI2cArray); Wire.write(" ");
 //  Wire.write(lickValveActivationI2cArray); Wire.write(" ");
 //  Wire.write(lickDrainValveActivationI2cArray); Wire.write(" ");
@@ -279,8 +280,8 @@ void dataAcquisition() {
   strainGaugeValue *= (5000 / 1023.0); //in mV
   cleanAir = analogRead(cleanAirPin);
   OdourFlow = analogRead(OdourFlowPin);
-  OdourFlow *=100;
-  DilutionFlow = digitalRead(DilutionFlowPin);
+//  OdourFlow *=100;
+  DilutionFlow = analogRead(DilutionFlowPin);
   OdSig1 = digitalRead(OdSig1Pin);
   OdSig2 = digitalRead(OdSig2Pin);
   OdSig3 = digitalRead(OdSig3Pin);
