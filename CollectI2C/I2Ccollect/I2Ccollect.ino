@@ -111,7 +111,7 @@ int OdourVial;
 // ===============================
 // =====         I2C          ====
 // ===============================
-int DELAY_I2C = 2;
+int DELAY_I2C = 3;
 int i2cError = 0;
 
 //I2C message
@@ -164,8 +164,9 @@ void setup() {
 
 void loop() {
   dataAcquisition();
-  ArduinoPlot();
+ // ArduinoPlot();
   i2cDataTransform();
+  delay(DELAY_I2C);
 
   ////////////////////////////////////////////////////////////////////
   /*OVERWRITE cameraTriggerValue so constant i2c communication without trigger*/
@@ -194,7 +195,7 @@ void loop() {
     Serial.println("I2C OFF, cameraTriggerValue != 1");
   }
 #endif
-  delay(DELAY_I2C);
+  
 }
 
 //-----------------------------------------------------------------------------------
