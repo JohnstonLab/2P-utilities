@@ -327,4 +327,16 @@ void dataAcquisition() {
   if(OdSig1 == LOW && OdSig2 ==LOW && OdSig3 ==HIGH && OdSig4 ==HIGH && OdSig5 == LOW){
     OdourVial = 12;
   }
+  if(OdSig1 == HIGH && OdSig2 ==LOW && OdSig3 ==HIGH && OdSig4 ==HIGH && OdSig5 == LOW){
+    OdourVial = 13;
+  }
+  if(OdSig1 == LOW && OdSig2 ==HIGH && OdSig3 ==HIGH && OdSig4 ==HIGH && OdSig5 == LOW){
+    OdourVial = 14;
+  }
+  if(OdSig1 == HIGH && OdSig2 ==HIGH && OdSig3 ==HIGH && OdSig4 ==HIGH && OdSig5 == LOW){
+    OdourVial = 15;
+  }
+  if(OdSig1 == LOW && OdSig2 ==LOW && OdSig3 ==LOW && OdSig4 ==LOW && OdSig5 == HIGH){
+    OdourVial = 16;
+  }
 }
