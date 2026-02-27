@@ -72,7 +72,7 @@ int strainGaugePin = A4;
 
 //camera trigger and stimulus
 int cameraTriggerPin = 15; //
-int stimulusPin = 16; //aurora 206 final valve
+int stimulusPin = A3; //aurora 206 final valve
 
 // swithI2C mode
 int I2CSwitch = 13;
@@ -117,7 +117,7 @@ int i2cError = 0;
 //I2C message
 char strainGaugeI2cArray[5];
 char cameraTriggerI2cArray[2];
-char stimulusI2cArray[2];
+char stimulusI2cArray[5];
 //Motion sensor data
 char motionXI2cArray[8];
 char motionYI2cArray[8];
@@ -206,7 +206,7 @@ void loop() {
 void i2cDataTransform() {
   ((String)strainGaugeValue).toCharArray(strainGaugeI2cArray, 5);
   ((String)cameraTriggerValue).toCharArray(cameraTriggerI2cArray, 2);
-  ((String)stimulusValue).toCharArray(stimulusI2cArray, 2);
+  ((String)stimulusValue).toCharArray(stimulusI2cArray, 5);
   ((String)motionSensorValuesArray[0]).toCharArray(motionXI2cArray, 8);
   ((String)motionSensorValuesArray[1]).toCharArray(motionYI2cArray, 8);
   ((String)motionSensorValuesArray[2]).toCharArray(motionZI2cArray, 8);
