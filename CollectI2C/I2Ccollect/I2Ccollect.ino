@@ -276,7 +276,7 @@ void dataAcquisition() {
   lickValveActivationValue = digitalRead(lickValveActivationPin);
   lickDrainValveActivationValue = digitalRead(lickDrainValveActivationPin);
   cameraTriggerValue = digitalRead(cameraTriggerPin);
-  stimulusValue = digitalRead(stimulusPin);
+  stimulusValue = analogRead(stimulusPin);
   strainGaugeValue = analogRead(strainGaugePin);
   strainGaugeValue *= (5000 / 1023.0); //in mV
   cleanAir = analogRead(cleanAirPin);
